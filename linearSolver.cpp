@@ -6,9 +6,10 @@
 #include <cmath>
 #include "linearSolver.h"
 
-LinearSolver::LinearSolver() {
-    this->setTolerance(1./1000000);
+LinearSolver::LinearSolver(double tol) {
+    this->tolerance = tol;
 }
+/*
 
 // Setters
 void LinearSolver::setTolerance(double tolerance) {
@@ -17,12 +18,10 @@ void LinearSolver::setTolerance(double tolerance) {
 void LinearSolver::setMatrixNorm(double matrixNorm) {
     this->matrixNorm = matrixNorm;
 }
-void LinearSolver::setOmega(double omega) {
-    this->omega = omega;
-}
-void LinearSolver::setAlgorithm(vec<double> *algorithm) {
+void LinearSolver::setAlgorithm(vec<double> (*algorithm)(double tol)) {
     this->algorithm = algorithm;
 }
+*/
 
 // Methods
 void LinearSolver::calculateTolFactor(){
@@ -47,6 +46,5 @@ bool LinearSolver::isFinished() {
 
 vec<double> LinearSolver::run(){
     this->calculateTolFactor();
-    return *(new vec<double>());
-    //return this->algorithm();
+    return (*this->algorithm)();
 }

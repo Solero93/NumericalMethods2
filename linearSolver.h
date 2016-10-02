@@ -19,15 +19,14 @@ public:
     vec<double> coefficients;
     vec<double> currentIterates;
     vec<double> previousIterates;
-    vec<double>* algorithm;
+    vec<double> (*algorithm)();
 
+    /*
     void setTolerance(double tolerance);
     void setMatrixNorm(double matrixNorm);
-    void setOmega(double omega);
-    void setCalcula(double calcula);
-    void setAlgorithm(vec<double> *algorithm);
-
-    LinearSolver();
+    void setAlgorithm(vec<double> (*algorithm)(double tol));
+    */
+    LinearSolver(double tol);
 
     bool isFinished();
     void calculateTolFactor();
@@ -35,6 +34,10 @@ public:
     vec<double> run();
 };
 
+
+/*
+ * OPERATOR OVERRIDES
+ */
 vector<double> operator+(const vector<double>& lhs, const vector<double>& rhs){	// return type is a vector of integers
     if(lhs.size() != rhs.size()){	// Vectors must be the same size in order to add them!
         throw std::runtime_error("Can't add two vectors of different sizes!");
