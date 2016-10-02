@@ -26,6 +26,7 @@ public:
     void setMatrixNorm(double matrixNorm);
     void setAlgorithm(vec<double> (*algorithm)(double tol));
     */
+    LinearSolver();
     LinearSolver(double tol);
 
     bool isFinished();

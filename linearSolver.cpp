@@ -6,6 +6,10 @@
 #include <cmath>
 #include "linearSolver.h"
 
+LinearSolver::LinearSolver(){
+
+}
+
 LinearSolver::LinearSolver(double tol) {
     this->tolerance = tol;
 }
