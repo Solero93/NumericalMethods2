@@ -3,3 +3,11 @@
 //
 
 #include "jacobi.h"
+
+Jacobi::Jacobi(double tol) : LinearSolver(tol) {
+    this->algorithm = jacobiAlgorithm();
+}
+
+vec<double> jacobiAlgorithm() {
+    int n =
+}

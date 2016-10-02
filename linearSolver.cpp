@@ -7,10 +7,10 @@
 #include "linearSolver.h"
 
 LinearSolver::LinearSolver(){
-
 }
 
-LinearSolver::LinearSolver(double tol) {
+LinearSolver::LinearSolver(vec<double> coef, double tol) {
+    this->coefficients = coef;
     this->tolerance = tol;
 }
 /*

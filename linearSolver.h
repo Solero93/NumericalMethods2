@@ -27,7 +27,7 @@ public:
     void setAlgorithm(vec<double> (*algorithm)(double tol));
     */
     LinearSolver();
-    LinearSolver(double tol);
+    LinearSolver(vec<double> coef, double tol);
 
     bool isFinished();
     void calculateTolFactor();
