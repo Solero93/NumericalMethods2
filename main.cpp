@@ -7,15 +7,16 @@
 using namespace std;
 
 int main() {
-    vector<double> coef;
-    for (int i = 0 ; i < N; i++) {
-        coef[i] = 1./N;
+    vector<double> coef(N, 0.0);
+    for (int i = 0; i < N; i++) {
+        coef[i] = (i+1)/N;
     }
+    cout << "Algorisme de Jacobi \n SOLUCIÓ DEL SISTEMA:" << endl;
     Jacobi jac = *(new Jacobi());
-    vector<double> a = jac.run();
-    for(vector<double>::iterator it = a.begin(); it != a.end(); it++){
-        cout << *it << endl;
-    }
+    jac.setCoefficients(coef);
+    jac.setTolerance(TOL);
+    jac.setMatrixNorm(2./3.);
+    jac.run();
 
     return 0;
 }

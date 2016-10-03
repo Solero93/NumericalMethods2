@@ -71,11 +71,15 @@ double LinearSolver::calculateNorm(vector<double> matrix){
     return norm;
 }
 
-bool LinearSolver::isFinished() {
-    return (this->tolFactor * (this->calculateNorm(this->currentIterates - this->previousIterates)) < this->tolerance);
+bool LinearSolver::isFinished(vector<double> prev, vector<double> curr) {
+    return (this->tolFactor * (this->calculateNorm(curr - prev)) < this->tolerance);
 }
 
-vector<double> LinearSolver::run(){
+void LinearSolver::run(){
     this->calculateTolFactor();
-    return this->algorithm();
+    vector<double> result = this->algorithm();
+    for (int i=0; i<10; i++){
+        cout << result[i] << ", ";
+    }
+    cout << "" << endl;
 }

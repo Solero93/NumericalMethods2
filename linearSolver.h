@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <stdexcept>
+#include <iostream>
 
 using namespace std;
 
@@ -17,8 +18,6 @@ public:
 
     double matrixNorm;
     vector<double> coefficients;
-    vector<double> currentIterates;
-    vector<double> previousIterates;
 
     LinearSolver();
 
@@ -26,10 +25,10 @@ public:
     void setMatrixNorm(double matrixNorm);
     void setCoefficients(const vector<double> &coefficients);
 
-    bool isFinished();
+    bool isFinished(vector<double> prev, vector<double> curr);
     void calculateTolFactor();
-    double calculateNorm(std::vector<double> vec);
-    vector<double> run();
+    double calculateNorm(vector<double> vec);
+    void run();
     virtual vector<double> algorithm() = 0;
 
 };
