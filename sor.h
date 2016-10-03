@@ -1,7 +1,3 @@
-//
-// Created by Solero93 on 01/10/2016.
-//
-
 #ifndef UB_NUMERICALMETHODS2_SOR_H
 #define UB_NUMERICALMETHODS2_SOR_H
 

@@ -6,12 +6,11 @@
       <sourceFolder url="file://$MODULE_DIR$/linearSolver.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/jacobi.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/myVector.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/linearSolver.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gauss-seidel.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/sor.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/jacobi.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/linearSolver.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jacobi.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/sor.h" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />

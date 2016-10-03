@@ -1,13 +1,10 @@
-//
-// Created by Solero93 on 01/10/2016.
-//
-
 #include "jacobi.h"
 
-Jacobi::Jacobi(double tol) : LinearSolver(tol) {
-    this->algorithm = jacobiAlgorithm();
+Jacobi::Jacobi() : LinearSolver() {
 }
 
-vec<double> jacobiAlgorithm() {
-    int n =
+vector<double> Jacobi::algorithm() {
+    vector<double> a = *(new vector<double>);
+    vector<double> b = *(new vector<double>);
+    return a-b;
 }

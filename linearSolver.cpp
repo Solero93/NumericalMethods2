@@ -1,41 +1,68 @@
-//
-// Created by Solero93 on 01/10/2016.
-//
-
 #include <limits>
 #include <cmath>
 #include "linearSolver.h"
 
-LinearSolver::LinearSolver(){
+/*
+ * OPERATOR OVERRIDES
+ */
+vector<double> operator+(const vector<double>& lhs, const vector<double>& rhs){	// return type is a vector of integers
+    if(lhs.size() != rhs.size()){	// Vectors must be the same size in order to add them!
+        throw std::runtime_error("Can't add two vectors of different sizes!");
+    }
+    vector<double> result;	// Declaring the resulting vector, result
+    for(int i=0; i < lhs.size(); i++){	// adding each element of the result vector
+        result.push_back(lhs.at(i) + rhs.at(i));	// by adding each element of the two together
+    }
+    return result;	// returning the vector "result"
 }
 
-LinearSolver::LinearSolver(vec<double> coef, double tol) {
-    this->coefficients = coef;
-    this->tolerance = tol;
+vector<double> operator-(const vector<double>& lhs, const vector<double>& rhs){	// return type is a vector of integers
+    if(lhs.size() != rhs.size()){	// Vectors must be the same size in order to add them!
+        throw std::runtime_error("Can't substract two vectors of different sizes!");
+    }
+    vector<double> result;	// Declaring the resulting vector, result
+    for(int i=0; i < lhs.size(); i++){	// adding each element of the result vector
+        result.push_back(lhs.at(i) - rhs.at(i));	// by adding each element of the two together
+    }
+    return result;	// returning the vector "result"
 }
+
+vector<double> operator*(const double& lhs, const vector<double>& rhs){	// return type is a vector of integers
+    vector<double> result;	// Declaring the resulting vector, result
+    for(int i=0; i < rhs.size(); i++){	// adding each element of the result vector
+        result.push_back(lhs * rhs.at(i));	// by adding each element of the two together
+    }
+    return result;	// returning the vector "result"
+}
+
 /*
+ * LINEARSOLVER CLASS IMPLEMENT
+ */
+LinearSolver::LinearSolver(){
+}
 
 // Setters
 void LinearSolver::setTolerance(double tolerance) {
     this->tolerance = tolerance;
 }
+
 void LinearSolver::setMatrixNorm(double matrixNorm) {
     this->matrixNorm = matrixNorm;
 }
-void LinearSolver::setAlgorithm(vec<double> (*algorithm)(double tol)) {
-    this->algorithm = algorithm;
+
+void LinearSolver::setCoefficients(const vector<double> &coefficients) {
+    this->coefficients = coefficients;
 }
-*/
 
 // Methods
 void LinearSolver::calculateTolFactor(){
     this->tolFactor = (this->matrixNorm) / (1. - this->matrixNorm);
 }
 
-double LinearSolver::calculateNorm(vec<double> matrix){
+double LinearSolver::calculateNorm(vector<double> matrix){
     double norm = numeric_limits<double>::min();
     double acc;
-    for (vec<double>::iterator it = matrix.begin(); it != matrix.end(); it++){
+    for (vector<double>::iterator it = matrix.begin(); it != matrix.end(); it++){
         acc = abs(*it);
         if (acc > norm) {
             norm = acc;
@@ -48,7 +75,7 @@ bool LinearSolver::isFinished() {
     return (this->tolFactor * (this->calculateNorm(this->currentIterates - this->previousIterates)) < this->tolerance);
 }
 
-vec<double> LinearSolver::run(){
+vector<double> LinearSolver::run(){
     this->calculateTolFactor();
-    return (*this->algorithm)();
+    return this->algorithm();
 }
