@@ -33,7 +33,7 @@ int main() {
     s.setCoefficients(coef);
     s.setTolerance(TOL);
     s.setMatrixNorm(2./3.);
-    s.setOmega(1);
+    s.setOmega(1.);
     s.run();
 
     return 0;

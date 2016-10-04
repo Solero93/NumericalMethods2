@@ -7,10 +7,6 @@
 
 using namespace std;
 
-vector<double> operator+(const vector<double>& lhs, const vector<double>& rhs);
-vector<double> operator-(const vector<double>& lhs, const vector<double>& rhs);
-vector<double> operator*(const double& lhs, const vector<double>& rhs);
-
 class LinearSolver {
 public:
     double tolerance;
