@@ -81,5 +81,5 @@ void LinearSolver::run(){
     for (int i=0; i<10; i++){
         cout << result[i] << ", ";
     }
-    cout << "" << endl;
+    cout << " .... " << endl;
 }
