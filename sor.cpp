@@ -49,5 +49,6 @@ double Sor::findBestParameter(int numPartitions) {
         }
     }
     this->numIterations = minIters;
+    cout << " SOR found the best parameter was: " << bestParam << " and completed the task in " << numIterations << " iterations";
     return bestParam;
 }

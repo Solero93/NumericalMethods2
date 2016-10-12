@@ -35,9 +35,9 @@ int main() {
     s.setMatrixNorm(2./3.);
     cout << " Finding optimal parameter, please wait...." << endl;
     double bestParam = s.findBestParameter(20);
-    cout << " SOR found the best parameter was: " << bestParam << " and completed the task in " << s.numIterations << " iterations";
     cout << "Solving system with best parameter: " << endl;
-
+    s.setOmega(bestParam);
+    s.run();
 
     return 0;
 }
