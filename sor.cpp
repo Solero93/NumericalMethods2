@@ -1,3 +1,4 @@
+#include <limits>
 #include "sor.h"
 
 Sor::Sor() : LinearSolver() {
@@ -27,7 +28,26 @@ vector<double> Sor::algorithm() {
                 (this->omega / 3) * (-(currentIterates[0] + currentIterates[n-4] + 3*previousIterates[n-2]) + coefficients[n-2]);
         currentIterates[n-1] = previousIterates[n-1] +
                 (this->omega / 3) * (-(currentIterates[1] + currentIterates[n-3] + 3*previousIterates[n-1]) + coefficients[n-1]);
+
+        numIterations++;
     }
 
     return currentIterates;
+}
+
+double Sor::findBestParameter(int numPartitions) {
+    int minIters = numeric_limits<int>::max();
+    double bestParam;
+    for (int i=1; i<numPartitions; i++){
+        this->numIterations = 0;
+        this->setOmega((2.*i)/numPartitions);
+        this->calculateTolFactor();
+        this->algorithm();
+        if (this->numIterations < minIters) {
+            minIters = this->numIterations;
+            bestParam = (2.*i)/numPartitions;
+        }
+    }
+    this->numIterations = minIters;
+    return bestParam;
 }

@@ -6,6 +6,7 @@
  * LINEARSOLVER CLASS IMPLEMENT
  */
 LinearSolver::LinearSolver(){
+    this->numIterations = 0;
 }
 
 // Setters
@@ -51,5 +52,5 @@ void LinearSolver::run(){
     for (int i=0; i<10; i++){
         cout << result[i] << ", ";
     }
-    cout << " .... " << endl;
+    cout << " .... " << "Done in " << numIterations << " iterations" << endl;
 }

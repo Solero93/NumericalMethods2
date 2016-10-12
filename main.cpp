@@ -28,13 +28,16 @@ int main() {
     ga.setMatrixNorm(2./3.);
     ga.run();
 
-    cout << "Algorisme de SOR \n SOLUCIÓ DEL SISTEMA:" << endl;
+    cout << "Algorisme de SOR" << endl;
     Sor s = *(new Sor());
     s.setCoefficients(coef);
     s.setTolerance(TOL);
     s.setMatrixNorm(2./3.);
-    s.setOmega(1.);
-    s.run();
+    cout << " Finding optimal parameter, please wait...." << endl;
+    double bestParam = s.findBestParameter(20);
+    cout << " SOR found the best parameter was: " << bestParam << " and completed the task in " << s.numIterations << " iterations";
+    cout << "Solving system with best parameter: " << endl;
+
 
     return 0;
 }

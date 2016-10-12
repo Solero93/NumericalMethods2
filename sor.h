@@ -12,6 +12,7 @@ public:
 
     void setOmega(double omega);
     virtual vector<double> algorithm() override;
+    double findBestParameter(int numPartitions);
 };
 
 #endif //UB_NUMERICALMETHODS2_SOR_H

@@ -11,6 +11,7 @@ class LinearSolver {
 public:
     double tolerance;
     double tolFactor; // Stored to optimize calculations
+    int numIterations;
 
     double matrixNorm;
     vector<double> coefficients;
