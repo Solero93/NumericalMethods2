@@ -4,8 +4,8 @@
 #include "sor.h"
 #include "steepest-descent.h"
 
-#define N pow(10,6)
-#define TOL pow(10,-12)
+#define N 1e6
+#define TOL 1e-12
 
 using namespace std;
 
@@ -20,14 +20,14 @@ int main() {
     jac.setCoefficients(coef);
     jac.setTolerance(TOL);
     jac.setMatrixNorm(2./3.);
-    //jac.run();
+    jac.run();
 
     cout << "Algorisme de Gauss-Seidel \n SOLUCIÓ DEL SISTEMA:" << endl;
     GaussSeidel ga = *(new GaussSeidel());
     ga.setCoefficients(coef);
     ga.setTolerance(TOL);
     ga.setMatrixNorm(2./3.);
-    //ga.run();
+    ga.run();
 
     cout << "Algorisme de SOR" << endl;
     Sor s = *(new Sor());
@@ -39,6 +39,8 @@ int main() {
     cout << "Solving system with best parameter: " << endl;
     s.setOmega(bestParam);
     s.run();*/
+    s.setOmega(1.);
+    s.run();
 
     cout << "Algorisme de Steepest Descent" << endl;
     SteepestDescent st = *(new SteepestDescent());

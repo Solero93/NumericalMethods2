@@ -16,11 +16,12 @@ vector<double> SteepestDescent::algorithm() {
     int n = coefficients.size();
     vector<double> previousIterates = vector<double>(n, 0.0);
     vector<double> currentIterates = vector<double>(n, 1.0);
+    vector<double> grad = vector<double>(n, 1.0);
 
     double alpha;
-    vector<double> grad, prod;
+    vector<double> prod;
 
-    while (!(this->isFinished(previousIterates, currentIterates))) {
+    while (calculateNorm(grad) > this->tolerance) {
         previousIterates = currentIterates;
 
         grad = gradient(previousIterates);
@@ -57,7 +58,7 @@ vector<double> SteepestDescent::gradient(vector<double> x){
     for (int i=2; i<n-2; i++){
         result[i] = x[i-2] + 3*x[i] + x[i+2] - ((double)i)/n;
     }
-    result[n-2] = x[0] + x[n-4] + 3*x[n-2] - (n-1)/n;
+    result[n-2] = x[0] + x[n-4] + 3*x[n-2] - ((double)(n-1))/n;
     result[n-1] = x[1] + x[n-3] + 3*x[n-1] - 1.;
     return result;
 }

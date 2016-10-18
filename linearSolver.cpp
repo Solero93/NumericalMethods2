@@ -1,5 +1,6 @@
 #include <limits>
 #include <cmath>
+#include <iomanip>
 #include "linearSolver.h"
 
 /*
@@ -28,7 +29,7 @@ void LinearSolver::calculateTolFactor(){
 }
 
 double LinearSolver::calculateNorm(vector<double> matrix){
-    double norm = numeric_limits<double>::min();
+    double norm = 0.0;
     double acc;
     for (vector<double>::iterator it = matrix.begin(); it != matrix.end(); it++){
         acc = abs(*it);
@@ -49,8 +50,8 @@ bool LinearSolver::isFinished(vector<double> prev, vector<double> curr) {
 void LinearSolver::run(){
     this->calculateTolFactor();
     vector<double> result = this->algorithm();
-    for (int i=0; i<10; i++){
-        cout << result[i] << ", ";
+    for (int i=0; i<5; i++){
+        cout << result[i] << setprecision(12) <<  ", ";
     }
     cout << " .... " << "Done in " << numIterations << " iterations" << endl;
 }
