@@ -8,7 +8,7 @@
 SteepestDescent::SteepestDescent() : LinearSolver(){
 }
 
-void SteepestDescent::setOmega(double omega) {
+void SteepestDescent::setOmega(const double omega) {
     this->omega = omega;
 }
 
@@ -21,7 +21,7 @@ vector<double> SteepestDescent::algorithm() {
     double alpha;
     vector<double> prod;
 
-    while (calculateNorm(grad) > this->tolerance) {
+    while (!(this->isFinished(previousIterates, currentIterates))) {
         previousIterates = currentIterates;
 
         grad = gradient(previousIterates);
@@ -53,12 +53,12 @@ vector<double> SteepestDescent::multiplyByA(vector<double> p){
 vector<double> SteepestDescent::gradient(vector<double> x){
     int n = coefficients.size();
     vector<double> result = vector<double> (n, 0.0);
-    result[0] = 3*x[0] + x[2] + x[n-2] - 1./n;
-    result[1] = 3*x[1] + x[3] + x[n-1] - 2./n;
+    result[0] = 3*x[0] + x[2] + x[n-2] - coefficients[0];
+    result[1] = 3*x[1] + x[3] + x[n-1] - coefficients[1];
     for (int i=2; i<n-2; i++){
-        result[i] = x[i-2] + 3*x[i] + x[i+2] - ((double)i)/n;
+        result[i] = x[i-2] + 3*x[i] + x[i+2] - coefficients[i];
     }
-    result[n-2] = x[0] + x[n-4] + 3*x[n-2] - ((double)(n-1))/n;
-    result[n-1] = x[1] + x[n-3] + 3*x[n-1] - 1.;
+    result[n-2] = x[0] + x[n-4] + 3*x[n-2] - coefficients[n-2];
+    result[n-1] = x[1] + x[n-3] + 3*x[n-1] - coefficients[n-1];
     return result;
 }

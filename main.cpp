@@ -12,7 +12,7 @@ using namespace std;
 int main() {
     vector<double> coef(N, 0.0);
     for (int i = 0; i < N; i++) {
-        coef[i] = (i+1)/N;
+        coef[i] = (i+1.)/N;
     }
 
     cout << "Algorisme de Jacobi \n SOLUCIÓ DEL SISTEMA:" << endl;

@@ -11,11 +11,11 @@ LinearSolver::LinearSolver(){
 }
 
 // Setters
-void LinearSolver::setTolerance(double tolerance) {
+void LinearSolver::setTolerance(const double tolerance) {
     this->tolerance = tolerance;
 }
 
-void LinearSolver::setMatrixNorm(double matrixNorm) {
+void LinearSolver::setMatrixNorm(const double matrixNorm) {
     this->matrixNorm = matrixNorm;
 }
 

@@ -4,7 +4,7 @@
 Sor::Sor() : LinearSolver() {
 }
 
-void Sor::setOmega(double omega) {
+void Sor::setOmega(const double omega) {
     this->omega = omega;
 }
 
