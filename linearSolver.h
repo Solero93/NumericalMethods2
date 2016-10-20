@@ -18,8 +18,8 @@ public:
 
     LinearSolver();
 
-    void setTolerance(double tolerance);
-    void setMatrixNorm(double matrixNorm);
+    void setTolerance(const double tolerance);
+    void setMatrixNorm(const double matrixNorm);
     void setCoefficients(const vector<double> &coefficients);
 
     bool isFinished(vector<double> prev, vector<double> curr);

@@ -10,7 +10,7 @@ public:
 
     double omega;
 
-    void setOmega(double omega);
+    void setOmega(const double omega);
     virtual vector<double> algorithm() override;
     double findBestParameter(int numPartitions);
 };

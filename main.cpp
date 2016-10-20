@@ -53,6 +53,5 @@ int main() {
     st.setOmega(1.);
     st.run();
 
-
     return 0;
 }

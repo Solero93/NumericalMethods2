@@ -14,7 +14,7 @@ public:
 
     double omega;
 
-    void setOmega(double omega);
+    void setOmega(const double omega);
     virtual vector<double> algorithm() override;
     vector<double> multiplyByA(vector<double> p);
 

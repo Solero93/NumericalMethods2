@@ -51,7 +51,7 @@ void LinearSolver::run(){
     this->calculateTolFactor();
     vector<double> result = this->algorithm();
     for (int i=0; i<5; i++){
-        cout << result[i] << setprecision(12) <<  ", ";
+        cout << setprecision(11) << result[i] <<  ", ";
     }
     cout << " .... " << "Done in " << numIterations << " iterations" << endl;
 }
