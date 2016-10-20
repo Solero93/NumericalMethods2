@@ -1,7 +1,3 @@
-//
-// Created by Solero93 on 12/10/2016.
-//
-
 #include <numeric>
 #include "steepest-descent.h"
 
@@ -21,7 +17,7 @@ vector<double> SteepestDescent::algorithm() {
     double alpha;
     vector<double> prod;
 
-    while (!(this->isFinished(previousIterates, currentIterates))) {
+    while (this->calculateNorm(grad) > this->tolerance) {
         previousIterates = currentIterates;
 
         grad = gradient(previousIterates);
