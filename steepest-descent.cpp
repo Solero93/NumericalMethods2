@@ -1,4 +1,5 @@
 #include <numeric>
+#include <limits>
 #include "steepest-descent.h"
 
 SteepestDescent::SteepestDescent() : LinearSolver(){
@@ -17,6 +18,8 @@ vector<double> SteepestDescent::algorithm() {
     double alpha;
     vector<double> prod;
 
+    this->numIterations = 0;
+
     while (this->calculateNorm(grad) > this->tolerance) {
         previousIterates = currentIterates;
 
@@ -28,7 +31,7 @@ vector<double> SteepestDescent::algorithm() {
             currentIterates[i] = previousIterates[i] - this->omega*alpha*grad[i];
         }
 
-        numIterations++;
+        this->numIterations++;
     }
     return currentIterates;
 }
@@ -57,4 +60,21 @@ vector<double> SteepestDescent::gradient(vector<double> x){
     result[n-2] = x[0] + x[n-4] + 3*x[n-2] - coefficients[n-2];
     result[n-1] = x[1] + x[n-3] + 3*x[n-1] - coefficients[n-1];
     return result;
+}
+
+double SteepestDescent::findBestParameter(int numPartitions) {
+    int minIters = numeric_limits<int>::max();
+    double bestParam;
+    for (int i=1; i<numPartitions; i++){
+        this->setOmega((2.*i)/numPartitions);
+        this->calculateTolFactor();
+        this->algorithm();
+        if (this->numIterations < minIters) {
+            minIters = this->numIterations;
+            bestParam = (2.*i)/numPartitions;
+        }
+    }
+    this->numIterations = minIters;
+    cout << " Steepest Descent found the best parameter was: " << bestParam << " and completed the task in " << numIterations << " iterations" << endl;
+    return bestParam;
 }

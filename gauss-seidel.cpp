@@ -8,6 +8,8 @@ vector<double> GaussSeidel::algorithm() {
     vector<double> previousIterates = vector<double> (n, 0.0);
     vector<double> currentIterates = vector<double> (n, 1.0);
 
+    this->numIterations = 0;
+
     while(!(this->isFinished(previousIterates, currentIterates))) {
         previousIterates = currentIterates;
 
@@ -18,7 +20,8 @@ vector<double> GaussSeidel::algorithm() {
         }
         currentIterates[n-2] = (-(currentIterates[0] + currentIterates[n-4]) + coefficients[n-2]) / 3.;
         currentIterates[n-1] = (-(currentIterates[1] + currentIterates[n-3]) + coefficients[n-1]) / 3.;
-        numIterations++;
+
+        this->numIterations++;
     }
 
     return currentIterates;

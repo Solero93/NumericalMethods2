@@ -13,6 +13,8 @@ vector<double> Sor::algorithm() {
     vector<double> previousIterates = vector<double> (n, 0.0);
     vector<double> currentIterates = vector<double> (n, 1.0);
 
+    this->numIterations = 0;
+
     while(!(this->isFinished(previousIterates, currentIterates))) {
         previousIterates = currentIterates;
 
@@ -29,7 +31,7 @@ vector<double> Sor::algorithm() {
         currentIterates[n-1] = previousIterates[n-1] +
                 (this->omega / 3) * (-(currentIterates[1] + currentIterates[n-3] + 3*previousIterates[n-1]) + coefficients[n-1]);
 
-        numIterations++;
+        this->numIterations++;
     }
 
     return currentIterates;
@@ -39,7 +41,6 @@ double Sor::findBestParameter(int numPartitions) {
     int minIters = numeric_limits<int>::max();
     double bestParam;
     for (int i=1; i<numPartitions; i++){
-        this->numIterations = 0;
         this->setOmega((2.*i)/numPartitions);
         this->calculateTolFactor();
         this->algorithm();
@@ -49,6 +50,6 @@ double Sor::findBestParameter(int numPartitions) {
         }
     }
     this->numIterations = minIters;
-    cout << " SOR found the best parameter was: " << bestParam << " and completed the task in " << numIterations << " iterations";
+    cout << " SOR found the best parameter was: " << bestParam << " and completed the task in " << numIterations << " iterations" << endl;
     return bestParam;
 }

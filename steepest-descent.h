@@ -15,6 +15,8 @@ public:
     vector<double> multiplyByA(vector<double> p);
 
     vector<double> gradient(vector<double> x);
+
+    double findBestParameter(int numPartitions);
 };
 
 #endif //UB_NUMERICALMETHODS2_STEEPEST_DESCENT_H

@@ -15,42 +15,44 @@ int main() {
         coef[i] = (i+1.)/N;
     }
 
-    cout << "Algorisme de Jacobi \n SOLUCIÓ DEL SISTEMA:" << endl;
+    cout << "\tJacobi algorithm" << endl;
     Jacobi jac = *(new Jacobi());
     jac.setCoefficients(coef);
     jac.setTolerance(TOL);
     jac.setMatrixNorm(2./3.);
+    cout << "Solving system: " << endl;
     jac.run();
 
-    cout << "Algorisme de Gauss-Seidel \n SOLUCIÓ DEL SISTEMA:" << endl;
+    cout << "\tGauss-Seidel algorithm" << endl;
     GaussSeidel ga = *(new GaussSeidel());
     ga.setCoefficients(coef);
     ga.setTolerance(TOL);
     ga.setMatrixNorm(2./3.);
+    cout << "Solving system: " << endl;
     ga.run();
 
-    cout << "Algorisme de SOR" << endl;
+    cout << "\tSOR algorithm" << endl;
     Sor s = *(new Sor());
     s.setCoefficients(coef);
     s.setTolerance(TOL);
     s.setMatrixNorm(2./3.);
-    cout << " Finding optimal parameter, please wait...." << endl;
-    /*double bestParam = s.findBestParameter(20);
-    cout << "Solving system with best parameter: " << endl;
-    s.setOmega(bestParam);
-    s.run();*/
-    s.setOmega(1.);
+    /*cout << " Finding optimal parameter, please wait...." << endl;
+    double bestParamSor = s.findBestParameter(20);*/
+    double bestParamSor = 1.1;
+    cout << "Solving system with best parameter = " << bestParamSor << " : " << endl;
+    s.setOmega(bestParamSor);
     s.run();
 
-    cout << "Algorisme de Steepest Descent" << endl;
+    cout << "\tSteepest Descent algorithm" << endl;
     SteepestDescent st = *(new SteepestDescent());
     st.setCoefficients(coef);
     st.setTolerance(TOL);
     st.setMatrixNorm(2./3.);
-/*    cout << " Finding optimal parameter, please wait...." << endl;
-    double bestParam = s.findBestParameter(20);
-*/    cout << "Solving system with best parameter: " << endl;
-    st.setOmega(1.);
+    /*cout << " Finding optimal parameter, please wait...." << endl;
+    double bestParamSteep = st.findBestParameter(20);*/
+    double bestParamSteep = 0.9;
+    cout << "Solving system with best parameter = " << bestParamSteep << " : " << endl;
+    st.setOmega(bestParamSteep);
     st.run();
 
     return 0;

@@ -8,6 +8,8 @@ vector<double> Jacobi::algorithm() {
     vector<double> previousIterates = vector<double> (n, 0.0);
     vector<double> currentIterates = vector<double> (n, 1.0);
 
+    this->numIterations = 0;
+
     while(!(this->isFinished(previousIterates, currentIterates))) {
         previousIterates = currentIterates;
 
@@ -18,7 +20,8 @@ vector<double> Jacobi::algorithm() {
         }
         currentIterates[n-2] = (-(previousIterates[0] + previousIterates[n-4]) + coefficients[n-2]) / 3.;
         currentIterates[n-1] = (-(previousIterates[1] + previousIterates[n-3]) + coefficients[n-1]) / 3.;
-        numIterations++;
+
+        this->numIterations++;
     }
 
     return currentIterates;

@@ -7,7 +7,6 @@
  * LINEARSOLVER CLASS IMPLEMENT
  */
 LinearSolver::LinearSolver(){
-    this->numIterations = 0;
 }
 
 // Setters
