@@ -3,13 +3,9 @@
 #include <iomanip>
 #include "linearSolver.h"
 
-/*
- * LINEARSOLVER CLASS IMPLEMENT
- */
 LinearSolver::LinearSolver(){
 }
 
-// Setters
 void LinearSolver::setTolerance(const double tolerance) {
     this->tolerance = tolerance;
 }
@@ -22,7 +18,6 @@ void LinearSolver::setCoefficients(const vector<double> &coefficients) {
     this->coefficients = coefficients;
 }
 
-// Methods
 void LinearSolver::calculateTolFactor(){
     this->tolFactor = (this->matrixNorm) / (1. - this->matrixNorm);
 }
@@ -52,5 +47,5 @@ void LinearSolver::run(){
     for (int i=0; i<5; i++){
         cout << setprecision(11) << result[i] <<  ", ";
     }
-    cout << " .... " << "Done in " << numIterations << " iterations" << endl;
+    cout << " .... " << "Done in " << this->numIterations << " iterations" << endl;
 }

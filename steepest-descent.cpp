@@ -62,6 +62,11 @@ vector<double> SteepestDescent::gradient(vector<double> x){
     return result;
 }
 
+/**
+ * Method that makes partitions on the (0,2) set and finds best parameter
+ * @param numPartitions
+ * @return bestParameter
+ */
 double SteepestDescent::findBestParameter(int numPartitions) {
     int minIters = numeric_limits<int>::max();
     double bestParam;

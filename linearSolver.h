@@ -7,6 +7,10 @@
 
 using namespace std;
 
+/**
+ * Generic class that will be inherited by all LinearSystem solver algorithm classes
+ */
+
 class LinearSolver {
 public:
     double tolerance;
@@ -27,7 +31,6 @@ public:
     double calculateNorm(vector<double> vec);
     void run();
     virtual vector<double> algorithm() = 0;
-
 };
 
 #endif //UB_NUMERICALMETHODS2_LINEARSOLVER_H
