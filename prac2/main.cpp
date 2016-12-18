@@ -6,7 +6,7 @@
 
 using namespace std;
 
-#define TOL 1e-10
+#define TOL 1e-15
 #define H 1e-2
 
 double curveInitPoint();
@@ -43,8 +43,8 @@ vector<vector<double>> continuumMethod(double x_0, double y_0) {
     double normGrad, x = x_0, y = y_0;
     do {
         gradCurr = gradF(x, y);
-        normGrad = sqrt(inner_product(gradCurr.begin(), gradCurr.end(), gradCurr.begin(), 0.0));
-        if (inner_product(gradCurr.begin(), gradCurr.end(), gradPrev.begin(), 0.0) < 0.0f) {
+        normGrad = sqrt(pow(gradCurr[0],2) + pow(gradCurr[1],2)) * H;
+        if (gradPrev[0] * gradCurr[0] + gradPrev[1] * gradCurr[1] < 0.0f) {
             gradCurr[0] /= -normGrad;
             gradCurr[1] /= -normGrad;
         } else {
@@ -63,10 +63,10 @@ vector<vector<double>> continuumMethod(double x_0, double y_0) {
 vector<double> newtonMethod(double x, double y, double x_0, double y_0) {
     double x_n = x, y_n = y;
     vector<double> h_n;
-    while (abs(F(x_n, y_n)) >= TOL) {
+    while (fabs(F(x_n, y_n)) >= TOL) {
         h_n = solveSystem(x_n, y_n, x_0, y_0);
-        x_n = x_n + h_n[0];
-        y_n = y_n + h_n[1];
+        x_n += h_n[0];
+        y_n += h_n[1];
     }
     return {x_n, y_n};
 }
@@ -74,10 +74,10 @@ vector<double> newtonMethod(double x, double y, double x_0, double y_0) {
 vector<double> solveSystem(double x, double y, double x_0, double y_0) {
     vector<double> grad = gradF(x, y);
     double det = 2.0f * (grad[0] * (y - y_0) - grad[1] * (x - x_0));
-    vector<double> solution(2);
-    solution[0] = (-2 * (y - y_0) * F(x, y)
-                   - grad[1] * (pow(H, 2) - pow(x - x_0, 2) - pow((y - y_0), 2))) / det;
-    solution[1] = (-2 * (x - x_0) * F(x, y)
-                   + grad[0] * (pow(H, 2) - pow(x - x_0, 2) - pow((y - y_0), 2))) / det;
-    return solution;
+    return {
+            (-2.0f * (y - y_0) * F(x, y)
+             - grad[1] * (pow(H, 2) - pow(x - x_0, 2) - pow((y - y_0), 2))) / det,
+            (2.0f * (x - x_0) * F(x, y)
+             + grad[0] * (pow(H, 2) - pow(x - x_0, 2) - pow((y - y_0), 2))) / det
+    };
 }
