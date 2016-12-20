@@ -1,83 +1,149 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include <numeric>
-#include "curve-ex12.h"
 
 using namespace std;
 
-#define TOL 1e-15
-#define H 1e-2
+class Point {
+public :
+    double x, y;
+};
 
-double curveInitPoint();
+#define TOL_BISECT 1e-5
+#define TOL 1e-12
+#define D 1e-2
 
-vector<vector<double>> continuumMethod(double x_0, double y_0);
+double F(Point p);
 
-vector<double> newtonMethod(double x, double y, double x_0, double y_0);
+Point gradF(Point p);
 
-vector<double> solveSystem(double x, double y, double x_0, double y_0);
+double F_x0(double y);
+
+double dF_x0(double y);
+
+Point curveInitPoint();
+
+vector<Point> continuumMethod(Point initP);
+
+Point newtonMethod(Point currP, Point initP);
+
+Point solveSystem(Point currP, Point initP);
 
 int main() {
-    double y_0 = curveInitPoint();
-    vector<vector<double>> cont = continuumMethod(0.0f, y_0);
-}
-
-double curveInitPoint() {
-    // Calculate between 0 and 1 (since there's change of sign, we use bisection)
-    double t_0 = 0.0f, t_1 = 1.0f, midPoint;
-    while ((t_1 - t_0) > TOL) {
-        midPoint = (t_0 + t_1) / 2.0f;
-        if (F_x0(midPoint) * F_x0(t_0) < 0.0f) {
-            t_1 = midPoint;
-        } else {
-            t_0 = midPoint;
-        }
+    Point initP = curveInitPoint();
+    vector<Point> cont = continuumMethod(initP);
+    for(Point p : cont) {
+        cout << p.x << ", " << p.y << endl;
     }
-    return midPoint;
 }
 
-vector<vector<double>> continuumMethod(double x_0, double y_0) {
-    vector<vector<double>> finalPoints;
-    vector<double> newtonPoints;
-    vector<double> gradPrev(2, 0.0), gradCurr;
-    double normGrad, x = x_0, y = y_0;
+Point curveInitPoint() {
+    // Calculate between 0 and 1 (since there's change of sign, we use bisection)
+    double t_0 = 2.0f, t_1 = 3.0f, point, f_point;
     do {
-        gradCurr = gradF(x, y);
-        normGrad = sqrt(pow(gradCurr[0],2) + pow(gradCurr[1],2)) * H;
-        if (gradPrev[0] * gradCurr[0] + gradPrev[1] * gradCurr[1] < 0.0f) {
-            gradCurr[0] /= -normGrad;
-            gradCurr[1] /= -normGrad;
+        point = (t_0 + t_1) / 2.0f;
+        f_point = F_x0(point);
+        if (f_point * F_x0(t_0) < 0.0f) {
+            t_1 = point;
         } else {
-            gradCurr[0] /= normGrad;
-            gradCurr[1] /= normGrad;
+            t_0 = point;
         }
-        newtonPoints = newtonMethod(x + gradCurr[0], y + gradCurr[1], x, y);
-        finalPoints.push_back(newtonPoints);
-        x = newtonPoints[0];
-        y = newtonPoints[1];
+    } while (fabs(t_0 - t_1) > TOL_BISECT);
+    // Since we are near enough, we do Newton-Raphson
+    do {
+        point -= F_x0(point) / dF_x0(point);
+        f_point = F_x0(point);
+    } while(fabs(f_point) > TOL);
+
+    return {0.0, point};
+}
+
+vector<Point> continuumMethod(Point initP) {
+    vector<Point> finalPoints;
+    Point currP = initP;
+    Point gradPrev = {0.0, 0.0}, gradCurr;
+    double normGrad;
+
+    do {
+        gradCurr = gradF(currP);
+        //gradCurr = {gradCurr.y, -gradCurr.x}; // Projectem a la tangent
+        normGrad = sqrt(pow(gradCurr.x, 2) + pow(gradCurr.y, 2));
+        gradCurr = {D * gradCurr.x / normGrad, D * gradCurr.y / normGrad};
+        if (gradPrev.x * gradCurr.x + gradPrev.y * gradCurr.y < 0.0f)
+            gradCurr = {-gradCurr.x, -gradCurr.y};
+
+        currP = newtonMethod(
+                {currP.x + gradCurr.x, currP.y + gradCurr.y},
+                {currP.x, currP.y});
+        finalPoints.push_back(currP);
         gradPrev = gradCurr;
-    } while (pow(x, 2) + pow(y - y_0, 2) < pow(H, 2) / 4);
+    } while (pow(currP.x - initP.x, 2) + pow(currP.y - initP.y, 2) > pow(D, 2) / 4);
     return finalPoints;
 }
 
-vector<double> newtonMethod(double x, double y, double x_0, double y_0) {
-    double x_n = x, y_n = y;
-    vector<double> h_n;
-    while (fabs(F(x_n, y_n)) >= TOL) {
-        h_n = solveSystem(x_n, y_n, x_0, y_0);
-        x_n += h_n[0];
-        y_n += h_n[1];
+Point newtonMethod(Point iterP, Point initP) {
+    Point currP = iterP;
+    Point height;
+    while (fabs(F(currP)) >= TOL) {
+        height = solveSystem(currP, initP);
+        currP = {currP.x + height.x, currP.y + height.y};
     }
-    return {x_n, y_n};
+    return currP;
 }
 
-vector<double> solveSystem(double x, double y, double x_0, double y_0) {
-    vector<double> grad = gradF(x, y);
-    double det = 2.0f * (grad[0] * (y - y_0) - grad[1] * (x - x_0));
+Point solveSystem(Point currP, Point initP) {
+    Point grad = gradF(currP);
+    double yDiff = currP.y - initP.y, xDiff = currP.x - initP.x;
+    double det = 2.0f * (grad.x * yDiff - grad.y * xDiff);
     return {
-            (-2.0f * (y - y_0) * F(x, y)
-             - grad[1] * (pow(H, 2) - pow(x - x_0, 2) - pow((y - y_0), 2))) / det,
-            (2.0f * (x - x_0) * F(x, y)
-             + grad[0] * (pow(H, 2) - pow(x - x_0, 2) - pow((y - y_0), 2))) / det
+            (-2.0f * yDiff * F(currP)
+             - (grad.y * (pow(D, 2) - pow(xDiff, 2) - pow(yDiff, 2)))) / det,
+            (2.0f * xDiff * F(currP)
+             + (grad.x * (pow(D, 2) - pow(xDiff, 2) - pow(yDiff, 2)))) / det
     };
+}
+
+double F(Point p) {
+    double x = p.x, y = p.y;
+    return ((3 * pow(x, 2)) + (3 * pow(y, 2)) - 1) * (pow(x, 2) + pow(y, 2) - 5) *
+         (pow(x, 2) + pow(y, 2) - (3 * x) + 2) + 1;
+}
+
+Point gradF(Point p) {
+    double x = p.x, y = p.y;
+    return {(6 * x) * (x * x + y * y - 5) * (x * x + y * y - 3 * x + 2) +
+	      (3 * x * x + 3 * y * y - 1) * (2 * x) * (x * x + y * y - 3 * x + 2) +
+	    (3 * x * x + 3 * y * y - 1) * (x * x + y * y - 5) * (2 * x - 3),
+
+            (6 * y) * (x * x + y * y - 5) * (x * x + y * y - 3 * x + 2) +
+	      (3 * x * x + 3 * y * y - 1) * (2 * y) * (x * x + y * y - 3 * x + 2) +
+	      (3 * x * x + 3 * y * y - 1) * (x * x + y * y - 5) * (2 * y)
+    };
+    /*return {
+            18 * pow(x, 5)
+            - 45 * pow(x, 4)
+            + 4 * pow(x, 3) * (9 * pow(y, 2) - 10)
+            - 18 * pow(x, 2) * (3 * pow(y, 2) - 8)
+            + 2 * x * (9 * pow(y, 4) - 20 * pow(y, 2) - 27)
+            - 9 * pow(y, 4)
+            + 48 * pow(y, 2)
+            - 15,
+
+            2 * y *
+            (9 * pow(x, 4)
+             - 18 * pow(x, 3)
+             + 2 * pow(x, 2) * (9 * pow(y, 2) - 10)
+             - 6 * x * (3 * pow(y, 2) - 8)
+             + 9 * pow(y, 4)
+             - 20 * pow(y, 2)
+             - 27)
+    };*/
+}
+
+double F_x0(double y) {
+    return 3 * pow(y, 6) - 10 * pow(y, 4) - 27 * pow(y, 2) + 11;
+}
+
+double dF_x0(double y) {
+    return 18 * pow(y, 5) - 40 * pow(y, 3) - 54 * y;
 }
