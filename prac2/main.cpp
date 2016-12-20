@@ -39,32 +39,32 @@ int main() {
 vector<Point> continuumMethod(Point initP) {
     vector<Point> finalPoints;
     Point currP = initP;
-    Point gradPrev = {0.0, 0.0}, gradCurr;
+    Point dirPrev = {0.0, 0.0}, dirCurr;
     double normGrad;
     do {
         // Calculate tangent vector
         // Which is orthogonal to the gradient
-        gradCurr = gradF(currP);
-        gradCurr = {gradCurr.y, -gradCurr.x};
+        dirCurr = gradF(currP);
+        dirCurr = {dirCurr.y, -dirCurr.x};
 
         // Make tangent vector have a norm of D (normalize and multiply by D)
         // Since we're searching for points at a distance D
-        normGrad = sqrt(pow(gradCurr.x, 2) + pow(gradCurr.y, 2));
-        gradCurr = {D * gradCurr.x / normGrad, D * gradCurr.y / normGrad};
+        normGrad = sqrt(pow(dirCurr.x, 2) + pow(dirCurr.y, 2));
+        dirCurr = {D * dirCurr.x / normGrad, D * dirCurr.y / normGrad};
 
         // To avoid going back and forth
         // Control the direction by looking at the angle between consequent gradients
-        if (gradPrev.x * gradCurr.x + gradPrev.y * gradCurr.y < 0.0f)
-            gradCurr = {-gradCurr.x, -gradCurr.y};
+        if (dirPrev.x * dirCurr.x + dirPrev.y * dirCurr.y < 0.0f)
+            dirCurr = {-dirCurr.x, -dirCurr.y};
 
         // Obtain the next point on the curve using Newton Method
         currP = newtonMethod(
-                {currP.x + gradCurr.x, currP.y + gradCurr.y},
+                {currP.x + dirCurr.x, currP.y + dirCurr.y},
                 {currP.x, currP.y});
 
         // Add found point to the result vector and continue
         finalPoints.push_back(currP);
-        gradPrev = gradCurr;
+        dirPrev = dirCurr;
 
         // Do this while we don't go back to the same place
     } while (pow(currP.x - initP.x, 2) + pow(currP.y - initP.y, 2) > pow(D, 2) / 4);
